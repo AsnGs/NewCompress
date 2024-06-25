@@ -1,9 +1,7 @@
 import os
 import re
 import csv
-import torch
 from tqdm import tqdm
-import hashlib
 
 from config import *
 
@@ -18,7 +16,9 @@ from config import *
 #  'ta1-cadets-e3-official-2.json',
 #  'ta1-cadets-e3-official-2.json.1']
 
-filelist = ['test.json']
+filelist = ['ta1-cadets-e3-official.json',
+ 'ta1-cadets-e3-official.json.1',
+ 'ta1-cadets-e3-official.json.2',]
 
 def store_netflow(file_path, csv_file):
     # Parse data from logs
@@ -33,12 +33,13 @@ def store_netflow(file_path, csv_file):
                             line)[0]
 
                         nodeid = res[0] # UUID
-                        srcaddr = res[2] # src ip
-                        srcport = res[3] # src port
-                        dstaddr = res[4] # dst ip
+                        # srcaddr = res[2] # src ip
+                        # srcport = res[3] # src port
+                        dstaddr = res[4] # dst ip  #! 只保留了远程 IP 地址+端口
                         dstport = res[5] # dst port
 
-                        nodeproperty = srcaddr + ":" + srcport + "->" + dstaddr + ":" + dstport
+                        # nodeproperty = srcaddr + ":" + srcport + "->" + dstaddr + ":" + dstport
+                        nodeproperty = dstaddr + ":" + dstport
                         netobj2hash[nodeid] = [nodeproperty]
                     except:
                         pass
@@ -118,7 +119,6 @@ def store_file(file_path, csv_file):
             fileuudiList.append(hash_key)
     return fileuudiList
 
-#! 是否保留所有事件呢？
 def store_event(file_path, reverse, subject_uuid2hash, file_uuid2hash, net_uuid2hash, csv_file):
     valid_subjects = set(subject_uuid2hash)
     valid_allnodes = set(subject_uuid2hash + file_uuid2hash + net_uuid2hash)
@@ -137,23 +137,24 @@ def store_event(file_path, reverse, subject_uuid2hash, file_uuid2hash, net_uuid2
                     relation_type_match = type_pattern.search(line)
                     if relation_type_match:
                         relation_type = relation_type_match.group(1)
-                        subject_uuid_match = subject_uuid_pattern.search(line)
-                        predicateObject_uuid_match = predicateObject_uuid_pattern.search(line)
-                        if subject_uuid_match and predicateObject_uuid_match:
-                            subject_uuid = subject_uuid_match.group(1)
-                            predicateObject_uuid = predicateObject_uuid_match.group(1)
-                            if subject_uuid in valid_subjects and predicateObject_uuid in valid_allnodes:
-                                time_rec_match = timestamp_pattern.search(line)
-                                if time_rec_match:
-                                    time_rec = time_rec_match.group(1)
-                                    subjectId = subject_uuid
-                                    objectId = predicateObject_uuid
-                                    if relation_type in reverse:  # reverse
-                                        datalist.append(
-                                            [objectId, subjectId, relation_type, time_rec[:10]])  # timestamp 保存前 10 位到秒钟即可
-                                    else :
-                                        datalist.append(
-                                            [subjectId, objectId, relation_type, time_rec[:10]])
+                        if relation_type in include_edge_type:
+                            subject_uuid_match = subject_uuid_pattern.search(line)
+                            predicateObject_uuid_match = predicateObject_uuid_pattern.search(line)
+                            if subject_uuid_match and predicateObject_uuid_match:
+                                subject_uuid = subject_uuid_match.group(1)
+                                predicateObject_uuid = predicateObject_uuid_match.group(1)
+                                if subject_uuid in valid_subjects and predicateObject_uuid in valid_allnodes:
+                                    time_rec_match = timestamp_pattern.search(line)
+                                    if time_rec_match:
+                                        time_rec = time_rec_match.group(1)
+                                        subjectId = subject_uuid
+                                        objectId = predicateObject_uuid
+                                        if relation_type in reverse:  # reverse
+                                            datalist.append(
+                                                [objectId, subjectId, relation_type, time_rec[:10], time_rec[:10]])  # timestamp 保存前 10 位到秒钟即可, 且占两位分别表示 starttime, endtime
+                                        else :
+                                            datalist.append(
+                                                [subjectId, objectId, relation_type, time_rec[:10], time_rec[:10]])
 
     csv_path = os.path.join(csv_dir, csv_file)
     with open(csv_path, mode='a', newline='') as file:
@@ -162,22 +163,31 @@ def store_event(file_path, reverse, subject_uuid2hash, file_uuid2hash, net_uuid2
             writer.writerow(item) 
 
 
+'''
+vertex.csv   44M    389568
+edge.csv.    2.9G   31573566
+'''
 if __name__ == "__main__":
+    print("-----Generate CSV from Raw Logs -----")
+
     os.makedirs(csv_dir, exist_ok=True)
     with open(os.path.join(csv_dir, vertex_csv_file), mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['uuid', 'name', 'type'])
     with open(os.path.join(csv_dir, edge_csv_file), mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['src', 'dst', 'operation', 'timestamp'])
+        writer.writerow(['src', 'dst', 'operation', 'starttime', 'endtime'])
 
     print("-----Processing Vertex-----")
+
     netobj2hash = store_netflow(file_path=raw_dir, csv_file=vertex_csv_file)
     file_obj2hash = store_file(file_path=raw_dir, csv_file=vertex_csv_file)
     subject_obj2hash = store_subject(file_path=raw_dir, csv_file=vertex_csv_file)
+
     print("-----Vertex CSV File Created-----\n")
     
     print("-----Processing Edges-----")
+
     store_event(
         file_path=raw_dir,
         reverse=edge_reversed,
@@ -186,5 +196,8 @@ if __name__ == "__main__":
         net_uuid2hash=netobj2hash,
         csv_file=edge_csv_file
     )
+
+    print("-----Edge CSV File Created-----\n")
+
 
 

@@ -14,6 +14,7 @@ csv_dir = artifact_dir + "csvs"
 
 vertex_csv_file = 'vertex.csv'
 edge_csv_file = 'edge.csv'
+mapping_json_file = 'mapping.json'
 
 ########################################################
 #
@@ -25,7 +26,15 @@ edge_csv_file = 'edge.csv'
 edge_reversed = [
     "EVENT_RECVFROM",
     "EVENT_RECVMSG",
-    "EVENT_READ",
-    'EVENT_MMAP',
-    'EVENT_EXECUTE'
+    "EVENT_READ"
+]
+
+include_edge_type=[
+    'EVENT_READ',
+    'EVENT_WRITE',
+    'EVENT_EXECUTE',
+    'EVENT_RECVFROM',
+    'EVENT_SENDTO',
+    'EVENT_FORK',
+    'EVENT_CLONE'
 ]
