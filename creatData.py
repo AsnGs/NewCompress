@@ -151,10 +151,10 @@ def store_event(file_path, reverse, subject_uuid2hash, file_uuid2hash, net_uuid2
                                         objectId = predicateObject_uuid
                                         if relation_type in reverse:  # reverse
                                             datalist.append(
-                                                [objectId, subjectId, relation_type, time_rec[:10], time_rec[:10]])  # timestamp 保存前 10 位到秒钟即可, 且占两位分别表示 starttime, endtime
+                                                [objectId, subjectId, relation_type, time_rec[:10]])  # timestamp 保存前 10 位到秒钟即可
                                         else :
                                             datalist.append(
-                                                [subjectId, objectId, relation_type, time_rec[:10], time_rec[:10]])
+                                                [subjectId, objectId, relation_type, time_rec[:10]])
 
     csv_path = os.path.join(csv_dir, csv_file)
     with open(csv_path, mode='a', newline='') as file:
@@ -176,7 +176,7 @@ if __name__ == "__main__":
         writer.writerow(['uuid', 'name', 'type'])
     with open(os.path.join(csv_dir, edge_csv_file), mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['src', 'dst', 'operation', 'starttime', 'endtime'])
+        writer.writerow(['src', 'dst', 'operation', 'timestamp'])
 
     print("-----Processing Vertex-----")
 
