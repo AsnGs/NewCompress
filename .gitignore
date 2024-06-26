@@ -3,3 +3,6 @@ artifact/csvs/vertex.csv
 __pycache__/config.cpython-39.pyc
 artifact/csvs/edgeAll.csv
 artifact/csvs/vertexAll.csv
+artifact/csv/edge.csv
+artifact/csv/vertex.csv
+__pycache__/utils.cpython-39.pyc
