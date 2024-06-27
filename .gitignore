@@ -6,3 +6,8 @@ artifact/csvs/vertexAll.csv
 artifact/csv/edge.csv
 artifact/csv/vertex.csv
 __pycache__/utils.cpython-39.pyc
+mergedIndex2us.pkl
+u2mergedIndex.pkl
+mergedIndex2content.pkl
+mergedIndex2content.npy
+mapDict.pkl
