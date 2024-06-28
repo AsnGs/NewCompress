@@ -28,7 +28,6 @@ mapping_json_file = 'mapping.json'
 # The directions of the following edge types need to be reversed
 edge_reversed = [
     "EVENT_RECVFROM",
-    "EVENT_RECVMSG",
     "EVENT_READ"
 ]
 
@@ -38,18 +37,31 @@ include_edge_type=[
     'EVENT_EXECUTE',
     'EVENT_RECVFROM',
     'EVENT_SENDTO',
+    'EVENT_SENDMSG',
     'EVENT_FORK',
     'EVENT_CLONE'
 ]
 
+relMap = {
+ 'EVENT_WRITE': 'EVENT_WRITE',
+ 'EVENT_READ' : 'EVENT_READ',
+ 'EVENT_EXECUTE': 'EVENT_EXECUTE',
+ 'EVENT_SENDTO': 'EVENT_WRITE',
+ 'EVENT_SENDMSG': 'EVENT_WRITE',
+ 'EVENT_RECVFROM': 'EVENT_READ',
+ 'EVENT_FORK': 'EVENT_FORK',
+ 'EVENT_CLONE': 'EVENT_FORK',
+}
+
 rel2id = {
-    'EVENT_FORK': 0, 
-    'EVENT_EXECUTE': 1, 
-    'EVENT_READ': 2, 
-    'EVENT_WRITE': 3, 
-    'EVENT_SENDTO': 4, 
-    'EVENT_RECVFROM': 5,
-    'EVENT_CLONE': 6
+ 1: 'EVENT_WRITE',
+ 'EVENT_WRITE': 1,
+ 2: 'EVENT_READ',
+ 'EVENT_READ': 2,
+ 3: 'EVENT_EXECUTE',
+ 'EVENT_EXECUTE': 3,
+ 4: 'EVENT_FORK',
+ 'EVENT_FORK': 4,
 }
 
 
@@ -74,4 +86,5 @@ filelist = ['ta1-cadets-e3-official.json',
  'ta1-cadets-e3-official.json.1',
  'ta1-cadets-e3-official.json.2',]
 
+minsTime=1522706863
 minsTime=1522706863

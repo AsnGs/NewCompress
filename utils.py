@@ -2,13 +2,9 @@ import os
 import re
 import csv
 import sys
-import tqdm
 import copy
-import math
-import copy
-import time
-import xxhash
-import gc
+
+from tqdm import tqdm
 
 from config import *
 
@@ -131,6 +127,7 @@ def store_event(file_path, reverse, subject_uuid2hash, file_uuid2hash, net_uuid2
                     if relation_type_match:
                         relation_type = relation_type_match.group(1)
                         if relation_type in include_edge_type:
+                            relation_type = relMap[relation_type]  # sendto -> write
                             subject_uuid_match = subject_uuid_pattern.search(line)
                             predicateObject_uuid_match = predicateObject_uuid_pattern.search(line)
                             if subject_uuid_match and predicateObject_uuid_match:
