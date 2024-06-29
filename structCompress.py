@@ -61,7 +61,7 @@ def mergeEdges(edgeList, mergedVetexIndex, v):
         mergedEdge.extend([times[0], times[-1]])  
 
     specificContent = consAndCodeContent(edgeList)
-    mergedEdge.extend(specificContent)
+    mergedEdge.append(str(specificContent))
     return mergedEdge
 
 def getFieldValueIndex_MappingDict(jsonObj, mapDict):
@@ -149,14 +149,22 @@ if __name__ == '__main__':
     vertexMap, edgeMap = createEdgeMap(csv_dir=csv_dir, edge_csv_file=edge_csv_file, vertex2Index=vertex2Index)    
     u2mergedIndex, mergedIndex2us, newEdges = createCompressStructMap(vertexMap, edgeMap)
     
-    with open('u2mergedIndex.pkl', 'wb') as file:
+    with open(os.path.join(sc_dir, u2mergedIndexFile), 'wb') as file:
         pickle.dump(u2mergedIndex, file)
-    with open('mergedIndex2us.pkl', 'wb') as file:
+    with open(os.path.join(sc_dir, mergedIndex2usFile), 'wb') as file:
         pickle.dump(mergedIndex2us, file)
-    with open('vertex2Index.pkl', 'wb') as file:
+    with open(os.path.join(sc_dir, vertex2IndexFile), 'wb') as file:
         pickle.dump(vertex2Index, file)
-    with open('index2Vertex.pkl', 'wb') as file:
+    with open(os.path.join(sc_dir, index2VertexFile), 'wb') as file:
         pickle.dump(index2Vertex, file)
-    with open('newEdges.pkl', 'wb') as file:
-        pickle.dump(newEdges, file)
+
+
+    with open(os.path.join(csv_dir, newEdgesFile), mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['mergedUIndex', 'vIndex', 'startTime', 'endTime', 'content']) 
+    with open(os.path.join(csv_dir, newEdgesFile), mode='a', newline='') as file:
+        writer = csv.writer(file)
+        for item in newEdges:
+            writer.writerow(item)     
+
 

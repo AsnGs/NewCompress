@@ -13,10 +13,21 @@ artifact_dir = './artifact/'
 csv_dir = artifact_dir + "csv"
 sc_dir = artifact_dir + "sc"   # structure compressed
 
+
+########################################################
+#
+#                   File Name
+#
+########################################################
 vertex_csv_file = 'vertex.csv'
 edge_csv_file = 'edge.csv'
 structMap_json_file = 'structMap.json'
 mapping_json_file = 'mapping.json'
+u2mergedIndexFile = 'u2mergedIndex.pkl'
+mergedIndex2usFile = 'mergedIndex2us.pkl'
+vertex2IndexFile = 'vertex2Index.pkl'
+index2VertexFile = 'index2Vertex.pkl'
+newEdgesFile = 'newEdges.csv'
 
 
 ########################################################
