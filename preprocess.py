@@ -23,9 +23,6 @@ def createMappingDict(field, data, mappingDict):
                     mappingDict[tempFiled][str(tempData[j])] = len(mappingDict[tempFiled].keys())
     return mappingDict    
         
-        
-
-
 if __name__ == '__main__':
     edges = []   # 保留边
     vertexData = []
