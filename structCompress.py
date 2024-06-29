@@ -5,6 +5,20 @@ from config import *
 from utils import *
 
 
+def group_adjacent_numbers(nums):
+    if not nums: return []
+    groups = []
+    start = nums[0]
+    end = nums[0]
+    for num in nums[1:]:
+        if num == end + 1:end = num
+        else:
+            groups.append((start, end))
+            start = num
+            end = num
+    groups.append((start, end))
+    return groups
+
 def contentCode(newEdges):
     processedData = []
     for edge in newEdges:
@@ -13,7 +27,7 @@ def contentCode(newEdges):
             tmpContent.append(int(key)+2)
             for edgetype in edge[-1][key].keys():
                 tmpContent.append(int(edgetype)+2)
-                tmpContent.extend([vertexOffset+2 for vertexOffset in edge[-1][key][edgetype]])
+                tmpContent.extend(group_adjacent_numbers([vertexOffset+2 for vertexOffset in edge[-1][key][edgetype]]))
                 tmpContent.append(0)
             tmpContent.append(1)
         processedData.append(tmpContent)
@@ -139,25 +153,11 @@ if __name__ == '__main__':
     # Create Compressed Struct Dict
     vertexMap, edgeMap = createEdgeMap(csv_dir=csv_dir, edge_csv_file=edge_csv_file, vertex2Index=vertex2Index)    
     u2mergedIndex, mergedIndex2us, mergedIndex2content, newEdges = createCompressStructMap(vertexMap, edgeMap)
-
-    newEdges = contentCode(newEdges)
-    mapDict = {}   # {Field1:{Value: Index}, ...}  # dst, starttime, endtime
-    # mins = [sys.maxsize,sys.maxsize]  # minStartTime, minEndTime
-    field = ['mergedIndex', 'dst', 'starttime', 'endtime', 'content']
-    data = newEdges
-    for i in range(len(data)):
-        tmpData = data[i]
-        jsonObj = {}
-        for j in range(len(field)):
-            jsonObj[field[j]] = tmpData[j]
-        mapDict = getFieldValueIndex_MappingDict(jsonObj=jsonObj, mapDict=mapDict)   
     
     with open('u2mergedIndex.pkl', 'wb') as file:
         pickle.dump(u2mergedIndex, file)
     with open('mergedIndex2us.pkl', 'wb') as file:
         pickle.dump(mergedIndex2us, file)
-    with open('mapDict.pkl', 'wb') as file:
-        pickle.dump(mapDict, file)
     with open('mergedIndex2content.pkl', 'wb') as file:
         pickle.dump(mergedIndex2content, file)
 
