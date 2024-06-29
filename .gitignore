@@ -11,3 +11,6 @@ u2mergedIndex.pkl
 mergedIndex2content.pkl
 mergedIndex2content.npy
 mapDict.pkl
+artifact/sc/index2Vertex.pkl
+artifact/sc/newEdges.pkl
+artifact/sc/vertex2Index.pkl

@@ -4,36 +4,38 @@ import pickle
 from config import *
 from utils import *
 
-
-def group_adjacent_numbers(nums):
-    if not nums: return []
-    groups = []
+# 将连续的 nodeOffset+2 后归成连续组
+def group_nodeOffset_plus2(n):
+    if not n: return []
+    nums = [i + 2 for i in n]
+    groups = ''
     start = nums[0]
     end = nums[0]
     for num in nums[1:]:
         if num == end + 1:end = num
         else:
-            groups.append((start, end))
+            # groups.append((start, end))
+            groups = groups + str(start) + '-' + str(end)
             start = num
             end = num
-    groups.append((start, end))
+    groups = groups + str(start) + '-' + str(end)
     return groups
 
-def contentCode(newEdges):
-    processedData = []
-    for edge in newEdges:
-        tmpContent = []
-        for key in edge[-1].keys():
-            tmpContent.append(int(key)+2)
-            for edgetype in edge[-1][key].keys():
-                tmpContent.append(int(edgetype)+2)
-                tmpContent.extend(group_adjacent_numbers([vertexOffset+2 for vertexOffset in edge[-1][key][edgetype]]))
-                tmpContent.append(0)
-            tmpContent.append(1)
-        processedData.append(tmpContent)
+# def contentCode(newEdges):
+#     processedData = []
+#     for edge in newEdges:
+#         tmpContent = []
+#         for key in edge[-1].keys():
+#             tmpContent.append(int(key)+2)
+#             for edgetype in edge[-1][key].keys():
+#                 tmpContent.append(int(edgetype)+2)
+#                 tmpContent.extend(group_nodeOffset_plus2([vertexOffset for vertexOffset in edge[-1][key][edgetype]]))
+#                 tmpContent.append(0)
+#             tmpContent.append(1)
+#         processedData.append(tmpContent)
 
 
-# 嵌套字典
+# edgeList: [[edgeType, time]]  -> content:{}
 def consAndCodeContent(edgeList):
     content = {} # content: {offsetTime:{typeIndex:[vertexOffset]}}   # 多重字典嵌套
     for i in range(len(edgeList)):
@@ -43,7 +45,17 @@ def consAndCodeContent(edgeList):
             if offsetTime not in content.keys(): content[offsetTime] = {}
             if typeIndex not in content[offsetTime].keys(): content[offsetTime][typeIndex] = []
             content[offsetTime][typeIndex].append(i)
-    return content
+    
+    # 使用 0 作为同一个 timeOffset 下不同 edgeType 之间的分隔符，1 作为不同 timeOffset 之间的分隔符
+    tmpContent = []  # [timeOffset+2, edgeTypeIndex+2, ' vertexOffset_1+2 - ', 0, range'2', 0, 1]
+    for key in content.keys():
+        tmpContent.append(int(key)+2)
+        for edgetype in content[key].keys():
+            tmpContent.append(int(edgetype)+2)
+            tmpContent.append(group_nodeOffset_plus2([vertexOffset+2 for vertexOffset in content[key][edgetype]]))
+            tmpContent.append(0)
+        tmpContent.append(1)
+    return tmpContent
 
 # 数组版本
 # def consAndCodeContent(edgeList):
@@ -56,10 +68,9 @@ def consAndCodeContent(edgeList):
 #             content[offsetTime].append([i, rel2id[edgeList[i][j][0]]])
 #     return content
 
-# 本来是将单 u 的节点不合并不映射，放在外面处理了，但是考虑后还是将其统一了，同时也映射，算src部分的编码了
 def mergeEdges(edgeList, mergedVetexIndex, v):
     mergedEdge = [mergedVetexIndex, v]  # [merged]
-    times = [t - minsTime for t in sorted(list(set([int(e[1]) for edges in edgeList for e in edges])))]
+    times = [t - minsTime for t in sorted(list(set([int(e[1]) for edges in edgeList for e in edges])))]  # t - minsTime
     # startTime, endTime = min(times), max(times)
     if len(edgeList) == 1:
         mergedEdge.extend([times[0], times[0]])
@@ -67,7 +78,7 @@ def mergeEdges(edgeList, mergedVetexIndex, v):
         mergedEdge.extend([times[0], times[-1]])  
 
     specificContent = consAndCodeContent(edgeList)
-    mergedEdge.append(specificContent)
+    mergedEdge.extend(specificContent)
     return mergedEdge
 
 def getFieldValueIndex_MappingDict(jsonObj, mapDict):
@@ -137,9 +148,10 @@ def createCompressStructMap(vertexMap, edgeMap):
                 u2mergedIndex[u].append(mergedVetexIndex)
             elif mergedVetexIndex not in u2mergedIndex[u]:
                 u2mergedIndex[u].append(mergedVetexIndex)
-        mergedIndex2content[mergedVetexIndex] = mergedEdge[-1]
+        # mergedIndex2content[mergedVetexIndex] = mergedEdge[-1]
         mergedVetexIndex += 1
-    return u2mergedIndex, mergedIndex2us, mergedIndex2content, newEdges
+    # return u2mergedIndex, mergedIndex2us, mergedIndex2content, newEdges
+    return u2mergedIndex, mergedIndex2us, newEdges
 
 if __name__ == '__main__':
     os.makedirs(sc_dir, exist_ok=True)
@@ -152,12 +164,16 @@ if __name__ == '__main__':
 
     # Create Compressed Struct Dict
     vertexMap, edgeMap = createEdgeMap(csv_dir=csv_dir, edge_csv_file=edge_csv_file, vertex2Index=vertex2Index)    
-    u2mergedIndex, mergedIndex2us, mergedIndex2content, newEdges = createCompressStructMap(vertexMap, edgeMap)
+    u2mergedIndex, mergedIndex2us, newEdges = createCompressStructMap(vertexMap, edgeMap)
     
     with open('u2mergedIndex.pkl', 'wb') as file:
         pickle.dump(u2mergedIndex, file)
     with open('mergedIndex2us.pkl', 'wb') as file:
         pickle.dump(mergedIndex2us, file)
-    with open('mergedIndex2content.pkl', 'wb') as file:
-        pickle.dump(mergedIndex2content, file)
+    with open('vertex2Index.pkl', 'wb') as file:
+        pickle.dump(vertex2Index, file)
+    with open('index2Vertex.pkl', 'wb') as file:
+        pickle.dump(index2Vertex, file)
+    with open('newEdges.pkl', 'wb') as file:
+        pickle.dump(newEdges, file)
 
