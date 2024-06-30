@@ -15,3 +15,6 @@ artifact/sc/index2Vertex.pkl
 artifact/sc/newEdges.pkl
 artifact/sc/vertex2Index.pkl
 artifact/csv/newEdges.csv
+artifact/csv/oldedge.csv
+artifact/sc/edge.npy
+artifact/sc/vertex.npy

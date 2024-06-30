@@ -78,7 +78,7 @@ def getFieldValueIndex_MappingDict(jsonObj, mapDict):
     return mapDict
 
 # All vertex to its index
-def createVertex2Index(csv_dir, vertex_csv_file):
+def createVertex2Index(csv_dir, wholeMapDict):
     vertex2Index = {}  # Vertex to Index
     index2Vertex = {}  # Index to Vertex
     with open(os.path.join(csv_dir, vertex_csv_file), 'r') as csvfile:
@@ -139,11 +139,12 @@ def createCompressStructMap(vertexMap, edgeMap):
 if __name__ == '__main__':
     os.makedirs(sc_dir, exist_ok=True)
 
+    wholeMapDict= {}
     id2char_dict = {}
     char2id_dict = {}
     
     #  Create vertex2Index Dict
-    vertex2Index, index2Vertex = createVertex2Index(csv_dir=csv_dir, vertex_csv_file=vertex_csv_file)
+    vertex2Index, index2Vertex = createVertex2Index(csv_dir=csv_dir, wholeMapDict=wholeMapDict)
 
     # Create Compressed Struct Dict
     vertexMap, edgeMap = createEdgeMap(csv_dir=csv_dir, edge_csv_file=edge_csv_file, vertex2Index=vertex2Index)    
@@ -157,7 +158,7 @@ if __name__ == '__main__':
         pickle.dump(vertex2Index, file)
     with open(os.path.join(sc_dir, index2VertexFile), 'wb') as file:
         pickle.dump(index2Vertex, file)
-
+    
 
     with open(os.path.join(csv_dir, newEdgesFile), mode='w', newline='') as file:
         writer = csv.writer(file)
