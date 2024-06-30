@@ -44,7 +44,7 @@ find . -name "*.tar.gz" -print0 | xargs -0 -I {} tar -xzvf {}
 python creatData.py
 ~~~
 
-3.Execute `structCompress.py` to compress the edges at the structual level and generate multiple mapping dicts to the `artifact/sc`.
+3.Execute `structCompress&Code.py` to compress the edges at the structual level. There will be a json file with all the mappings (`wholeMapDict.json`) and two npy files with encoded vertex and edge information (`edge.npy` and `vertex.npy`) in directory `artifact/sc`.
 ~~~
-python structCompress.py
+python structCompress&Code.py
 ~~~

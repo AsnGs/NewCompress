@@ -10,8 +10,9 @@ raw_dir = '/home/yingjie/Darpa/E3-Cadets/'
 # The directory to save all artifacts
 artifact_dir = './artifact/'
 
-csv_dir = artifact_dir + "csv"
-sc_dir = artifact_dir + "sc"   # structure compressed
+csv_dir = artifact_dir + "csv/"
+sc_dir = artifact_dir + "sc/"   # structure compressed
+log_dir = artifact_dir + "log/"
 
 
 ########################################################
@@ -32,6 +33,7 @@ u2mergedIndexFile = 'u2mergedIndex.pkl'
 mergedIndex2usFile = 'mergedIndex2us.pkl'
 vertex2IndexFile = 'vertex2Index.pkl'
 index2VertexFile = 'index2Vertex.pkl'
+wholeMapDictFile = 'wholeMapDict.json'
 
 
 

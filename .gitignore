@@ -18,3 +18,4 @@ artifact/csv/newEdges.csv
 artifact/csv/oldedge.csv
 artifact/sc/edge.npy
 artifact/sc/vertex.npy
+artifact/sc/wholeMapDict.json

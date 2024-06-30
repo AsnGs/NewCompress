@@ -1,0 +1,6 @@
+2024-06-30 07:45:13 - INFO - Start logging of structCompree&Code.
+2024-06-30 07:45:16 - INFO - The time of mapping and coding vertexes is : 2.6975648403167725 seconds.
+2024-06-30 07:45:16 - INFO - The size of vertex.npy is 128 bits.
+2024-06-30 07:46:19 - INFO - The time of compressing and coding edges is : 62.94355249404907 seconds
+2024-06-30 07:46:19 - INFO - The size of edge.npy is 128 bits.
+2024-06-30 07:46:19 - INFO - The size of wholeMapDict.json is 360 bits.
