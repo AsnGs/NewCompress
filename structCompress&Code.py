@@ -2,6 +2,7 @@ import os
 import csv
 import json
 import time
+import pickle
 import logging
 import numpy as np
 from config import *
@@ -199,7 +200,7 @@ if __name__ == '__main__':
         codedVertexData.append(codeVertex(json_obj, wholeMapDict))
     codedVertexArray = np.array([c for item in codedVertexData for c in item]) # processed vertex data -> flatten
     codedVertexArray = codedVertexArray.reshape(len(codedVertexArray), 1)
-    np.save(os.path.join(sc_dir, codedVertexNPYFile), codedVertexArray)
+    np.save(os.path.join(sc_dir, codedVertexFile), codedVertexArray) 
     end_time = time.time()
     logger.info(f'The time of mapping and coding vertexes is : {(end_time - start_time)} seconds.')
 
@@ -213,7 +214,8 @@ if __name__ == '__main__':
         codedEdgeData.append(list2char(data, wholeMapDict['char2id_dict'], wholeMapDict['id2char_dict']))
     codedEdgeArray = np.array([c for item in codedEdgeData for c in item])
     codedEdgeArray = codedEdgeArray.reshape(len(codedEdgeArray), 1)
-    np.save(os.path.join(sc_dir, codedEdgeNPYFile), codedEdgeArray) 
+    np.save(os.path.join(sc_dir, codedEdgeFile), codedEdgeArray) 
+
     end_time = time.time()   
     logger.info(f'The time of compressing and coding edges is : {(end_time - start_time)} seconds')
                 

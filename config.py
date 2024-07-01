@@ -22,17 +22,17 @@ log_dir = artifact_dir + "log/"
 ########################################################
 vertex_csv_file = 'vertex.csv'
 edge_csv_file = 'edge.csv'
-newEdgesFile = 'newEdges.csv'
-newVertexFile = 'newVertex.csv'
-codedVertexNPYFile = 'vertex.npy'
-codedEdgeNPYFile = 'edge.npy'
+# newEdgesFile = 'newEdges.csv'
+# newVertexFile = 'newVertex.csv'
+codedVertexFile = 'vertex.npy'
+codedEdgeFile = 'edge.npy'
 
-structMap_json_file = 'structMap.json'
-mapping_json_file = 'mapping.json'
-u2mergedIndexFile = 'u2mergedIndex.pkl'
-mergedIndex2usFile = 'mergedIndex2us.pkl'
-vertex2IndexFile = 'vertex2Index.pkl'
-index2VertexFile = 'index2Vertex.pkl'
+# structMap_json_file = 'structMap.json'
+# mapping_json_file = 'mapping.json'
+# u2mergedIndexFile = 'u2mergedIndex.pkl'
+# mergedIndex2usFile = 'mergedIndex2us.pkl'
+# vertex2IndexFile = 'vertex2Index.pkl'
+# index2VertexFile = 'index2Vertex.pkl'
 wholeMapDictFile = 'wholeMapDict.json'
 
 

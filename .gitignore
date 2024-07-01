@@ -19,3 +19,5 @@ artifact/csv/oldedge.csv
 artifact/sc/edge.npy
 artifact/sc/vertex.npy
 artifact/sc/wholeMapDict.json
+artifact/sc/edge.pkl
+artifact/sc/vertex.pkl
