@@ -90,20 +90,21 @@ rel2id = {
 #
 ########################################################
 
-# filelist = ['ta1-cadets-e3-official.json',
-#  'ta1-cadets-e3-official.json.1',
-#  'ta1-cadets-e3-official.json.2',
-#  'ta1-cadets-e3-official-1.json',
-#  'ta1-cadets-e3-official-1.json.1',
-#  'ta1-cadets-e3-official-1.json.2',
-#  'ta1-cadets-e3-official-1.json.3',
-#  'ta1-cadets-e3-official-1.json.4',
-#  'ta1-cadets-e3-official-2.json',
-#  'ta1-cadets-e3-official-2.json.1']
-
 filelist = ['ta1-cadets-e3-official.json',
  'ta1-cadets-e3-official.json.1',
- 'ta1-cadets-e3-official.json.2',]
+ 'ta1-cadets-e3-official.json.2',
+ 'ta1-cadets-e3-official-1.json',
+ 'ta1-cadets-e3-official-1.json.1',
+ 'ta1-cadets-e3-official-1.json.2',
+ 'ta1-cadets-e3-official-1.json.3',
+ 'ta1-cadets-e3-official-1.json.4',
+ 'ta1-cadets-e3-official-2.json',
+ 'ta1-cadets-e3-official-2.json.1']
 
+# filelist = ['ta1-cadets-e3-official.json',
+#  'ta1-cadets-e3-official.json.1',
+#  'ta1-cadets-e3-official.json.2',]
+
+minsTime=1522706863
 minsTime=1522706863
 minsTime=1522706863
